@@ -2,7 +2,6 @@ from data import *
 import threading
 import socket
 import pickle
-from icecream import ic
 
 dfs_first_fase = []             # Lista de dataframes retornados pelos clients na primeira fase
 dfs_second_fase = []            # Lista de dicts com dataframes retornados pelos clients na segunda fase e a quantidade de linhas do dataframe passado originalmente
@@ -30,18 +29,18 @@ def split_df(df, *, chunk_size=None, parts=None):
         
     return chunks
 
-def union_first_fase(dfs):
+def get_global_candidates(dfs):
     df = pd.concat(dfs)
     df.drop_duplicates(subset='itemsets',inplace=True)
     df = df.sort_values(by='length')
     
     return df['itemsets']
 
-def union_second_fase(dfs, len_df, len_chuncks, min_support):
+def union(dfs, len_df, len_chuncks, min_support):
     i = 0
     
     for df in dfs:
-        df['support'] = round(df['support'] * (len_chuncks[i] / len_df ), 2)
+        df['support'] = round(df['support'] * (len_chuncks[i] / len_df ), 4)
         i += 1
     
     df = pd.concat(dfs)
@@ -122,12 +121,13 @@ def main():
     server.listen(5)
     print(f"[*] Servidor escutando em {host}:{port}")
     
-    # df = get_df_online_retail()
-    df = get_df_example()
+    df = get_df_online_retail()
+    # df = get_df_example()
+    # df = get_df_exemple_2()
     
     min_support = 0.02
     
-    num_workers = 3
+    num_workers = 4
     workers = num_workers
     clients = []
     chuncks = split_df(df, parts=workers)
@@ -154,7 +154,7 @@ def main():
 
     while True:
         if len(dfs_first_fase) == num_workers:
-            result = union_first_fase(dfs_first_fase)
+            result = get_global_candidates(dfs_first_fase)
             
             for client in clients:
                 client_handler = threading.Thread(target=client_thread_second_fase, args=(client['client'], result, client['length']))
@@ -166,7 +166,7 @@ def main():
         if len(dfs_second_fase) == num_workers:
             len_chuncks = [client['length'] for client in clients]
             dfs = [df['df'] for df in dfs_second_fase]
-            result = union_second_fase(dfs, len(df), len_chuncks, min_support)
+            result = union(dfs, len(df), len_chuncks, min_support)
             break
     
     result.to_csv(f"results/result.csv", index=False)

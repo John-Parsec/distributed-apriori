@@ -1,5 +1,4 @@
 from Apriori import Apriori
-from icecream import ic
 import pandas as pd
 import socket
 import pickle
