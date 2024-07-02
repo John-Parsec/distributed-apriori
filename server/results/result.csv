@@ -1,0 +1,28 @@
+itemsets,support
+"('Beer',)",0.4
+"('Diaper',)",0.7
+"('Snack',)",0.4
+"('Gum',)",0.2
+"('Soda',)",0.5
+"('Beer', 'Snack')",0.2
+"('Beer', 'Gum')",0.2
+"('Beer', 'Diaper')",0.4
+"('Gum', 'Snack')",0.1
+"('Diaper', 'Soda')",0.30000000000000004
+"('Snack', 'Soda')",0.30000000000000004
+"('Gum', 'Soda')",0.1
+"('Diaper', 'Snack')",0.2
+"('Beer', 'Soda')",0.2
+"('Diaper', 'Gum')",0.2
+"('Beer', 'Diaper', 'Gum')",0.2
+"('Diaper', 'Gum', 'Soda')",0.1
+"('Diaper', 'Gum', 'Snack')",0.1
+"('Diaper', 'Snack', 'Soda')",0.1
+"('Beer', 'Snack', 'Soda')",0.1
+"('Beer', 'Diaper', 'Soda')",0.2
+"('Beer', 'Gum', 'Soda')",0.1
+"('Beer', 'Gum', 'Snack')",0.1
+"('Beer', 'Diaper', 'Snack')",0.2
+"('Beer', 'Diaper', 'Gum', 'Soda')",0.1
+"('Beer', 'Diaper', 'Gum', 'Snack')",0.1
+"('Beer', 'Diaper', 'Snack', 'Soda')",0.1
